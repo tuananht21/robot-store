@@ -1,0 +1,8 @@
+---12/9/2026---
+backend auth jwt => xong
+register => xong
+login => xong
+logout => xong
+refreshToken => xong
+me => xong
+api phía frontend => xong
