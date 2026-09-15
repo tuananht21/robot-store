@@ -3,6 +3,7 @@
 namespace App\Http\Requests\category;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class categoryValidation extends FormRequest
@@ -39,4 +40,19 @@ class categoryValidation extends FormRequest
             'slug.unique' => 'Slug already exists.',
         ];
     }
+
+    public function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors()->all();
+
+        throw new \Illuminate\Validation\ValidationException(
+            $validator,
+            response()->json([
+                'status' => false,
+                'statusCode' => 400,
+                'message' => implode(' and ', $errors),
+            ], 400)
+        );
+    }
 }
+
