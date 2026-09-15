@@ -56,13 +56,7 @@ class authController extends Controller
             }
 
             $user = Auth::user();
-
-            $data = [
-                'user' => $user,
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-            ];
-            return $this->respondWithToken($token, $data);
+            return $this->respondWithToken($token, $user);
         } catch (\Throwable $th) {
             //throw $th;
             return ApiResponse::error('Login failed', 500);
@@ -77,7 +71,7 @@ class authController extends Controller
                 return ApiResponse::error('Unauthorized', 401);
             }
             Auth::logout();
-            return ApiResponse::success('Successfully logged out', 200);
+            return ApiResponse::success(null, 'Successfully logged out', 200);
         } catch (\Throwable $th) {
             //throw $th;
             return ApiResponse::error('Unauthorized', 401);
@@ -114,7 +108,9 @@ class authController extends Controller
     {
         try {
             //code...
-            return $this->respondWithToken(Auth::refresh());
+            $token = Auth::refresh();
+            $user = Auth::user();
+            return $this->respondWithToken($token, $user);
         } catch (\Throwable $th) {
             //throw $th;
             if ($th instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
