@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('thumbnail')->nullable();
             $table->boolean('status')->default(true)->comment('true: Kinh doanh, false: Ngung Kinh Doanh');
             $table->string('slug')->unique();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->restrictOnDelete();
             $table->timestamps();
         });
     }

@@ -6,3 +6,10 @@ logout => xong
 refreshToken => xong
 me => xong
 api phía frontend => xong
+
+---14/9/2026---
+role admin, user => xong
+middleware admin => xong
+
+---15/9/2026---
+hoàn thiện category phía backend

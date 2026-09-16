@@ -6,31 +6,33 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class adminMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
         try {
-
-            //kiểm tra token
             $user = JWTAuth::parseToken()->authenticate();
-            if (!$user || $user->role !== 1) {
+
+            if (!$user) {
                 return response()->json([
-                    'message' => 'Forbidden',
+                    'message' => 'Unauthorized.',
+                ], 401);
+            }
+
+            if ($user->role != 1) {
+                return response()->json([
+                    'message' => 'Forbidden.',
                 ], 403);
             }
-        } catch (\Tymon\JWTAuth\Exceptions\JWTException $th) {
 
+            return $next($request);
+
+        } catch (JWTException $e) {
             return response()->json([
-                'message' => 'Token is invalid missing',
+                'message' => 'Unauthorized.',
             ], 401);
         }
-        return $next($request);
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('price')->default(0);
             $table->string('version')->nullable()->comment('air, pro, H1, H2, G1');
-            $table->unsignedInteger('sale_price')->default(0);
+            $table->unsignedInteger('sale_price')->nullable();
             $table->unsignedInteger('stock')->default(0);
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->timestamps();

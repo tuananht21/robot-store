@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\auth\authController;
+use App\Http\Controllers\category\categoryController;
+use App\Http\Controllers\products\productController;
+use App\Http\Middleware\auth\adminMiddleware;
+use App\Http\Middleware\auth\userMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,10 +16,10 @@ Route::prefix('v1')->group(function () {
     // test connect
     route::get('/', function (Request $request) {
         return response()->json([
-            'message' => 'Connect successfull.',
+            'message' => 'Connect successful.',
             'status' => true,
             'statusCode' => 200,
-        ], JSON_UNESCAPED_UNICODE);
+        ], 200, [], JSON_UNESCAPED_UNICODE);
     });
     // auth routes
     Route::group([
@@ -29,5 +33,33 @@ Route::prefix('v1')->group(function () {
         Route::post('logout', [authController::class, 'logout']);
         Route::post('refresh', [authController::class, 'refresh']);
         Route::post('me', [authController::class, 'me']);
+    });
+
+    Route::group([
+        'middleware' => ['api', userMiddleware::class],
+        'prefix' => 'categories'
+    ], function () {
+        Route::get('/', [categoryController::class, 'index']);
+        Route::get('/{id}', [categoryController::class, 'show']);
+
+        Route::group([ 'middleware' => [adminMiddleware::class]], function () {
+            Route::post('/', [categoryController::class, 'store']);
+            Route::put('/{id}', [categoryController::class, 'update']);
+            Route::delete('/{id}', [categoryController::class, 'destroy']);
+        });
+    });
+
+    Route::group([
+        'middleware' => ['api', userMiddleware::class],
+        'prefix' => 'products'
+    ], function () {
+        Route::get('/', [productController::class, 'index']);
+        Route::get('/{id}', [productController::class, 'show']);
+        
+        Route::group(['api' => [adminMiddleware::class]], function () {
+            Route::post('/', [productController::class, 'store']);
+            Route::put('/{id}', [productController::class, 'update']);
+            Route::delete('/{id}', [productController::class, 'destroy']);
+        });
     });
 });

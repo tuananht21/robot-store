@@ -10,125 +10,141 @@ use App\Http\Requests\auth\registerValidation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class authController extends Controller
 {
-    //
-
     public function register(registerValidation $registerValidation)
     {
-        try {
-            //code...
-            $email = $registerValidation->email;
-            $password = $registerValidation->password;
-            $name = $registerValidation->name;
+        DB::beginTransaction();
 
-            DB::beginTransaction();
+        try {
             $user = User::create([
-                'name' => $name,
-                'email' => $email,
-                'password' => Hash::make($password),
+                'name' => $registerValidation->name,
+                'email' => $registerValidation->email,
+                'password' => Hash::make($registerValidation->password),
             ]);
+
             DB::commit();
+
             $data = [
-                'email' => $email,
-                'name' => $name,
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
                 'created_at' => $user->created_at,
             ];
-            return ApiResponse::success($data, 'Register succesfully', 201);
+
+            return ApiResponse::success(
+                $data,
+                'Register successfully.',
+                201
+            );
         } catch (\Throwable $th) {
-            //throw $th;
-            DB::rollback();
-            return ApiResponse::error('Register failed', 500);
+            DB::rollBack();
+
+            return ApiResponse::error(
+                'Register failed.',
+                500
+            );
         }
     }
 
     public function login(loginValidation $loginValidation)
     {
         try {
-            //code...
-            $email = $loginValidation->email;
-            $password = $loginValidation->password;
-            $credentials = ['email' => $email, 'password' => $password];
+            $credentials = [
+                'email' => $loginValidation->email,
+                'password' => $loginValidation->password,
+            ];
 
             if (!$token = Auth::attempt($credentials)) {
-                return ApiResponse::error('Email or password is incorrect.', 401);
+                return ApiResponse::error(
+                    'Email or password is incorrect.',
+                    401
+                );
             }
 
             $user = Auth::user();
+
             return $this->respondWithToken($token, $user);
         } catch (\Throwable $th) {
-            //throw $th;
-            return ApiResponse::error('Login failed', 500);
+            return ApiResponse::error(
+                'Login failed.',
+                500
+            );
         }
     }
 
     public function logout()
     {
         try {
-            //code...
-            if (!Auth::check()) {
-                return ApiResponse::error('Unauthorized', 401);
-            }
             Auth::logout();
-            return ApiResponse::success(null, 'Successfully logged out', 200);
+
+            return ApiResponse::success(
+                null,
+                'Successfully logged out.',
+                200
+            );
         } catch (\Throwable $th) {
-            //throw $th;
-            return ApiResponse::error('Unauthorized', 401);
+            return ApiResponse::error(
+                'Logout failed.',
+                500
+            );
         }
     }
 
     public function me()
     {
         try {
-            //code...
-            if (!Auth::check()) {
-                return ApiResponse::error('Unauthorized', 401);
-            }
             $user = Auth::user();
+
+            if (!$user) {
+                return ApiResponse::error(
+                    'Unauthorized.',
+                    401
+                );
+            }
 
             $data = [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'role' => $user->role,
             ];
-            return ApiResponse::success($data, 'Get user successfully.', 200);
+
+            return ApiResponse::success(
+                $data,
+                'Get user successfully.',
+                200
+            );
         } catch (\Throwable $th) {
-            //throw $th;
-            return ApiResponse::error('Unauthorized', 401);
+            return ApiResponse::error(
+                'Unauthorized.',
+                401
+            );
         }
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function refresh()
     {
         try {
-            //code...
             $token = Auth::refresh();
             $user = Auth::user();
-            return $this->respondWithToken($token, $user);
-        } catch (\Throwable $th) {
-            //throw $th;
-            if ($th instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return ApiResponse::error('Token has expired', 401);
-            }
 
-            return ApiResponse::error('Unauthorized', 401);
+            return $this->respondWithToken($token, $user);
+        } catch (TokenExpiredException $th) {
+            return ApiResponse::error(
+                'Token has expired.',
+                401
+            );
+        } catch (\Throwable $th) {
+            return ApiResponse::error(
+                'Unauthorized.',
+                401
+            );
         }
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string  $token
-     * @param  array|null  $user
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected function respondWithToken($token, $user = null)
     {
         $data = [
@@ -138,6 +154,10 @@ class authController extends Controller
             'user' => $user,
         ];
 
-        return ApiResponse::success($data, 'Successfully', 200);
+        return ApiResponse::success(
+            $data,
+            'Successfully.',
+            200
+        );
     }
 }

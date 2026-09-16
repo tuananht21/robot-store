@@ -10,19 +10,14 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class userMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            
             $user = JWTAuth::parseToken()->authenticate();
+
             if (!$user) {
                 return response()->json([
-                    'message' => 'unauthorized',
+                    'message' => 'Unauthorized.',
                 ], 401);
             }
 
@@ -30,7 +25,7 @@ class userMiddleware
 
         } catch (JWTException $e) {
             return response()->json([
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized.',
             ], 401);
         }
     }
