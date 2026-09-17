@@ -9,7 +9,7 @@ const loginAPI = (email, password) => {
   return instance.post("auth/login", data);
 };
 
-const registerAPI = (email, password, name) => {
+const registerAPI = (name, email, password) => {
   const data = {
     email,
     password,
