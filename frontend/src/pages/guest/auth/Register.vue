@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import  Logo  from "../../../components/common/Logo.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { registerValidation } from "../../../validations/authValidation";
 import { registerAPI } from "../../../apis/clients/auth";
 import { useToast } from "../../../hooks/useToast";
@@ -32,7 +33,6 @@ const handleRegister = async () => {
       confPasswordMessage.value = validation.confPasswordMessage;
       return;
     }
-
 
     const res = await registerAPI(name.value, email.value, password.value);
     if (res.status === 201) {
@@ -69,8 +69,10 @@ const handleRegister = async () => {
       <div class="bg-white rounded-2xl border border-gray-100 p-5 sm:p-6">
         <!-- Header -->
         <div class="text-center mb-8">
-          <Logo size="2xl" />
-          <h1 class="text-2xl font-semibold text-gray-800">Welcome Back</h1>
+          <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-md">
+            <FontAwesomeIcon :icon="faUserPlus" class="text-lg" />
+          </div>
+          <h1 class="text-2xl font-semibold text-gray-800">Create Account</h1>
         </div>
         <form @submit.prevent="handleRegister" class="space-y-4">
           <div>
