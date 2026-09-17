@@ -24,6 +24,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../pages/guest/NotFound.vue'),
+  },
 ];
 
 const router = createRouter({
