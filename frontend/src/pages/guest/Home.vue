@@ -4,9 +4,11 @@ import Footer from "../../components/layouts/guest/Footer.vue";
 </script>
 
 <template>
-  <div>
-    <Header />
-    
-    <Footer />
-  </div>
+  <main>
+    <div>
+      <Header />
+
+      <Footer />
+    </div>
+  </main>
 </template>
