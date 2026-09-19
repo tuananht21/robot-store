@@ -34,18 +34,10 @@ class authController extends Controller
                 'created_at' => $user->created_at,
             ];
 
-            return ApiResponse::success(
-                $data,
-                'Register successfully.',
-                201
-            );
+            return ApiResponse::success($data,'Register successfully.',201);
         } catch (\Throwable $th) {
             DB::rollBack();
-
-            return ApiResponse::error(
-                'Register failed.',
-                500
-            );
+            return ApiResponse::error('Register failed.',500);
         }
     }
 
@@ -58,20 +50,14 @@ class authController extends Controller
             ];
 
             if (!$token = Auth::attempt($credentials)) {
-                return ApiResponse::error(
-                    'Email or password is incorrect.',
-                    401
-                );
+                return ApiResponse::error('Email or password is incorrect.',401);
             }
 
             $user = Auth::user();
 
             return $this->respondWithToken($token, $user);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Login failed.',
-                500
-            );
+            return ApiResponse::error('Login failed.',500);
         }
     }
 
@@ -80,16 +66,9 @@ class authController extends Controller
         try {
             Auth::logout();
 
-            return ApiResponse::success(
-                null,
-                'Successfully logged out.',
-                200
-            );
+            return ApiResponse::success(null,'Successfully logged out.',200);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Logout failed.',
-                500
-            );
+            return ApiResponse::error('Logout failed.',500);
         }
     }
 
@@ -99,10 +78,7 @@ class authController extends Controller
             $user = Auth::user();
 
             if (!$user) {
-                return ApiResponse::error(
-                    'Unauthorized.',
-                    401
-                );
+                return ApiResponse::error('Unauthorized.',401);
             }
 
             $data = [
@@ -112,16 +88,9 @@ class authController extends Controller
                 'role' => $user->role,
             ];
 
-            return ApiResponse::success(
-                $data,
-                'Get user successfully.',
-                200
-            );
+            return ApiResponse::success($data,'Get user successfully.',200);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Unauthorized.',
-                401
-            );
+            return ApiResponse::error('Unauthorized.',401);
         }
     }
 
@@ -133,15 +102,9 @@ class authController extends Controller
 
             return $this->respondWithToken($token, $user);
         } catch (TokenExpiredException $th) {
-            return ApiResponse::error(
-                'Token has expired.',
-                401
-            );
+            return ApiResponse::error('Token has expired.',401);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Unauthorized.',
-                401
-            );
+            return ApiResponse::error('Unauthorized.',401);
         }
     }
 
@@ -154,10 +117,6 @@ class authController extends Controller
             'user' => $user,
         ];
 
-        return ApiResponse::success(
-            $data,
-            'Successfully.',
-            200
-        );
+        return ApiResponse::success($data,'Successfully.',200);
     }
 }
