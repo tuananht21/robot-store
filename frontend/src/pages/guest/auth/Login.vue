@@ -26,14 +26,17 @@ const handleLogin = async () => {
       passwordMessage.value = validation.passwordMessage;
       return;
     }
+    isLoading.value = true;
     const res = await loginAPI(email.value, password.value);
     if (res.status === 200) {
-
+      const token = res.data.data.access_token;
+      Cookies.set("access_token", token);
+      console.log("Token:", Cookies.get("access_token"));
       showToast({
         type: "success",
         title: "Thành công",
         message: "Đăng nhập thành công!",
-      })
+      });
     } 
   } catch (error) {
     console.log(error);
@@ -53,7 +56,6 @@ const handleLogin = async () => {
   <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-10">
     <div class="w-full max-w-sm">
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6">
-        <!-- Header -->
         <div class="text-center mb-6">
           <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-md">
             <FontAwesomeIcon :icon="faRightToBracket" class="text-lg" />
@@ -77,7 +79,7 @@ const handleLogin = async () => {
           </div>
           <button type="submit"
             class="w-full h-10 flex items-center justify-center gap-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 active:bg-blue-800 transition">
-            <FontAwesomeIcon :icon="faRightToBracket" />Login</button>
+            <FontAwesomeIcon :icon="faRightToBracket" />{{ isLoading ? "Log In..." : "Login" }}</button>
         </form>
         <div class="mt-5 pt-5 border-t border-gray-100 text-center">
           <p class="text-sm text-gray-500">
