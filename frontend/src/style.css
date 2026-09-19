@@ -1,1 +1,44 @@
 @import "tailwindcss";
+
+:root {
+  --trade-dark: #090d16;
+  --trade-secondary: #131c2e;
+  --trade-surface-hover: #1e293b;
+  --trade-border: #1e293b;
+  --trade-white: #f8fafc;
+  --trade-heading-2: #94a3b8;
+  --trade-muted: #64748b;
+  --trade-primary: #00f0ff;
+  --trade-blue: #2563eb;
+  --trade-pink: #ff2a85;
+  --trade-success: #00e676;
+  --trade-error: #ff3355;
+  --trade-warning: #ffb300;
+  --trade-info: #00b0ff;
+}
+
+@theme {
+  --color-trade-pink: var(--trade-pink);
+  --color-trade-blue: var(--trade-blue);
+  --color-trade-primary: var(--trade-primary);
+  --color-trade-white: var(--trade-white);
+  --color-trade-dark: var(--trade-dark);
+  --color-trade-secondary: var(--trade-secondary);
+  --color-trade-heading-2: var(--trade-heading-2);
+  --color-success: var(--trade-success);
+  --color-error: var(--trade-error);
+  --color-warning: var(--trade-warning);
+  --color-info: var(--trade-info);
+  --color-primary: var(--trade-primary);
+  --color-secondary: var(--trade-secondary);
+  --color-dark: var(--trade-dark);
+  --color-white: var(--trade-white);
+}
+
+@layer base {
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}
