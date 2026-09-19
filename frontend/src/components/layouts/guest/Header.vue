@@ -41,14 +41,14 @@ const isMenuOpen = ref(false);
             to="/"
             class="px-4 py-2 text-base font-medium text-gray-700 hover:text-blue-400 hover:bg-gray-50 transition"
           >
-            Home
+            Trang chủ
           </RouterLink>
           <RouterLink
             to="/products"
             class="px-4 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition"
             active-class="text-blue-600 bg-blue-50/80 font-semibold"
           >
-            Products
+            Sản phẩm
           </RouterLink>
           <!-- Categories -->
           <div class="relative group">
@@ -57,7 +57,7 @@ const isMenuOpen = ref(false);
               class="px-4 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition flex items-center gap-1.5"
               active-class="text-blue-600 bg-blue-50/80 font-semibold"
             >
-              Categories
+              Danh mục
               <FontAwesomeIcon
                 :icon="faChevronDown"
                 class="text-xs transition-transform duration-200 group-hover:rotate-180"
@@ -71,10 +71,10 @@ const isMenuOpen = ref(false);
                 class="w-48 bg-white shadow-xl border border-gray-100 p-2"
               >
                 <RouterLink
-                  to="/categories/home-robot"
+                  to="/categories/Trang chủ-robot"
                   class="block px-3 py-2  text-base text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition"
                 >
-                  Home Robots
+                  Trang chủ Robots
                 </RouterLink>
                 <RouterLink
                   to="/categories/industrial"
@@ -96,14 +96,14 @@ const isMenuOpen = ref(false);
             class="px-4 py-2  text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition"
             active-class="text-blue-600 bg-blue-50/80 font-semibold"
           >
-            About
+            Giới thiệu
           </RouterLink>
           <RouterLink
             to="/contact"
             class="px-4 py-2  text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition"
             active-class="text-blue-600 bg-blue-50/80 font-semibold"
           >
-            Contact
+            Liên hệ
           </RouterLink>
         </nav>
 
@@ -163,7 +163,7 @@ const isMenuOpen = ref(false);
           active-class="text-blue-600 bg-blue-50 font-semibold"
           @click="isMenuOpen = false"
         >
-          Home
+          Trang chủ
         </RouterLink>
         <RouterLink
           to="/products"
@@ -171,7 +171,7 @@ const isMenuOpen = ref(false);
           active-class="text-blue-600 bg-blue-50 font-semibold"
           @click="isMenuOpen = false"
         >
-          Products
+          Sản phẩm
         </RouterLink>
         <RouterLink
           to="/categories"
@@ -179,7 +179,7 @@ const isMenuOpen = ref(false);
           active-class="text-blue-600 bg-blue-50 font-semibold"
           @click="isMenuOpen = false"
         >
-          Categories
+          Danh mục
         </RouterLink>
         <RouterLink
           to="/about"
@@ -187,7 +187,7 @@ const isMenuOpen = ref(false);
           active-class="text-blue-600 bg-blue-50 font-semibold"
           @click="isMenuOpen = false"
         >
-          About
+          Giới thiệu
         </RouterLink>
         <RouterLink
           to="/contact"
@@ -195,7 +195,7 @@ const isMenuOpen = ref(false);
           active-class="text-blue-600 bg-blue-50 font-semibold"
           @click="isMenuOpen = false"
         >
-          Contact
+          Liên hệ
         </RouterLink>
 
         <!-- Auth Actions in Mobile Menu -->
