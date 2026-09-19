@@ -1,24 +1,18 @@
 <?php
 
-namespace App\Http\Requests\product;
+namespace App\Http\Requests\products;
+
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class productValidation extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
         $productId = $this->route('id');
@@ -43,15 +37,14 @@ class productValidation extends FormRequest
 
             'status' => [
                 'required',
-                'string',
-                Rule::in(['active', 'inactive']),
+                'boolean',
             ],
 
             'slug' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products', 'slug')->ignore($productId),
+                'unique:products,slug,' . $productId,
             ],
 
             'category_id' => [
@@ -62,9 +55,6 @@ class productValidation extends FormRequest
         ];
     }
 
-    /**
-     * Custom validation messages.
-     */
     public function messages(): array
     {
         return [
@@ -78,8 +68,7 @@ class productValidation extends FormRequest
             'thumbnail.max' => 'Thumbnail must not exceed 255 characters.',
 
             'status.required' => 'Status is required.',
-            'status.string' => 'Status must be a string.',
-            'status.in' => 'Status must be active or inactive.',
+            'status.boolean' => 'Status must be true or false.',
 
             'slug.required' => 'Slug is required.',
             'slug.string' => 'Slug must be a string.',
@@ -92,9 +81,6 @@ class productValidation extends FormRequest
         ];
     }
 
-    /**
-     * Handle a failed validation attempt.
-     */
     protected function failedValidation(Validator $validator): void
     {
         $errors = $validator->errors()->all();

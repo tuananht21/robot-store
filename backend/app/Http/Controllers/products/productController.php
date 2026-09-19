@@ -4,7 +4,7 @@ namespace App\Http\Controllers\products;
 
 use App\helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\product\productValidation;
+use App\Http\Requests\products\productValidation;
 use App\Models\Product;
 
 class productController extends Controller
@@ -15,20 +15,10 @@ class productController extends Controller
     public function index()
     {
         try {
-            $products = Product::with('category')
-                ->latest()
-                ->get();
-
-            return ApiResponse::success(
-                $products,
-                'Get products successfully.',
-                200
-            );
+            $products = Product::with(['category', 'detailProducts', 'images'])->latest()->get();
+            return ApiResponse::success($products, 'Get products successfully.', 200);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Failed to get products.',
-                500
-            );
+            return ApiResponse::error('Failed to get products.', 500);
         }
     }
 
@@ -54,18 +44,11 @@ class productController extends Controller
                 'category_id' => $category_id,
             ]);
 
-            $product->load('category');
+            $product->load(['category', 'detailProducts', 'images']);
 
-            return ApiResponse::success(
-                $product,
-                'Create product successfully.',
-                201
-            );
+            return ApiResponse::success($product, 'Create product successfully.', 201);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Failed to create product.',
-                500
-            );
+            return ApiResponse::error('Failed to create product.', 500);
         }
     }
 
@@ -75,42 +58,29 @@ class productController extends Controller
     public function show(string $id)
     {
         try {
-            $product = Product::with('category')
+            $product = Product::with(['category', 'detailProducts', 'images'])
                 ->find($id);
 
             if (!$product) {
-                return ApiResponse::error(
-                    'Product not found.',
-                    404
-                );
+                return ApiResponse::error('Product not found.', 404);
             }
 
-            return ApiResponse::success(
-                $product,
-                'Get product successfully.',
-                200
-            );
+            return ApiResponse::success($product, 'Get product successfully.', 200);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Failed to get product.',
-                500
-            );
+            return ApiResponse::error('Failed to get product.', 500);
         }
     }
 
     /**
      * Update the specified product.
      */
-    public function update(productValidation $productValidation,string $id) 
+    public function update(productValidation $productValidation, string $id) 
     {
         try {
             $product = Product::find($id);
 
             if (!$product) {
-                return ApiResponse::error(
-                    'Product not found.',
-                    404
-                );
+                return ApiResponse::error('Product not found.', 404);
             }
 
             $name = $productValidation->name;
@@ -129,18 +99,10 @@ class productController extends Controller
                 'category_id' => $category_id,
             ]);
 
-            $product->load('category');
-
-            return ApiResponse::success(
-                $product,
-                'Update product successfully.',
-                200
-            );
+            $product->load(['category', 'detailProducts', 'images']);
+            return ApiResponse::success($product, 'Update product successfully.', 200);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Failed to update product.',
-                500
-            );
+            return ApiResponse::error('Failed to update product.',500);
         }
     }
 
@@ -153,24 +115,13 @@ class productController extends Controller
             $product = Product::find($id);
 
             if (!$product) {
-                return ApiResponse::error(
-                    'Product not found.',
-                    404
-                );
+                return ApiResponse::error('Product not found.',404);
             }
-
+            
             $product->delete();
-
-            return ApiResponse::success(
-                null,
-                'Delete product successfully.',
-                200
-            );
+            return ApiResponse::success(null,'Delete product successfully.',200);
         } catch (\Throwable $th) {
-            return ApiResponse::error(
-                'Failed to delete product.',
-                500
-            );
+            return ApiResponse::error('Failed to delete product.',500);
         }
     }
 }
