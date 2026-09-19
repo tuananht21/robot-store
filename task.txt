@@ -20,3 +20,13 @@ hoàn thiện ui login, register => xong
 
 ---17/9/2026---
 hoàn thiện chức năng register + ui => xong
+
+---18/9/2026---
+backend xử lý api cơ bản cho các chức năng
+cart => xong
+detailProduct => xong
+image => xong
+order => xong
+
+---19/9/2026---
+hoàn thiện login => xong
