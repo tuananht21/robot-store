@@ -50,7 +50,7 @@ const routes = [
       },
       {
         path: '/orders/:id',
-        name: 'Orders',
+        name: 'OrdersDetail',
         component: () => import('../pages/protected/OrderDetail.vue'),
       },
     ],
