@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessCheckout;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -9,14 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class paymentController extends Controller
 {
-    //
-    function vnPay(Request $request)
+    public function vnPay(Request $request)
     {
         try {
-            //code...
+
             DB::beginTransaction();
             $paymentData = $request->all();
-            // Kiểm tra coi thiếu field nào
             $requiredFields = [
                 'vnp_TxnRef',
                 'vnp_TransactionNo',
@@ -33,17 +33,30 @@ class paymentController extends Controller
 
             if (!empty($missingFields)) {
                 DB::rollBack();
-                return redirect()->route('home')->with('error','Thiếu dữ liệu thanh toán: ' . implode(', ', $missingFields));
-            }
-            // Kiểm tra thanh toán thành công
-            if ($paymentData['vnp_TransactionStatus'] == '00' && $paymentData['vnp_ResponseCode'] == '00') {
-                $order = Order::findOrFail($paymentData['vnp_TxnRef']);
 
-                // Kiểm tra Payment đã tồn tại chưa
+                return redirect()->route('home')->with('error', 'Thiếu dữ liệu thanh toán: ' . implode(', ', $missingFields));
+            }
+
+            $order = Order::findOrFail($paymentData['vnp_TxnRef']);
+
+            if ($order->payment_method !== false) {
+                DB::rollBack();
+
+                return redirect()->route('home')->with('error', 'Đơn hàng không sử dụng thanh toán online.');
+            }
+
+            if ($paymentData['vnp_TransactionStatus'] == '00' && $paymentData['vnp_ResponseCode'] == '00') {
                 $isPayment = Payment::where('order_id', $order->id)->first();
 
                 if (!$isPayment) {
-                    $order->payment_status = 1;
+                    $cart = Cart::where('user_id', $order->user_id)->with('detailProduct')->get();
+
+                    if ($cart->isEmpty()) {
+                        DB::rollBack();
+                        return redirect()->route('home')->with('error', 'Giỏ hàng không còn sản phẩm để xử lý đơn hàng.');
+                    }
+
+                    $order->payment_status = true;
                     $order->save();
 
                     Payment::create([
@@ -51,19 +64,22 @@ class paymentController extends Controller
                         'payment_gateway' => 'vnpay',
                         'bank_code' => $paymentData['vnp_BankCode'] ?? null,
                         'response_code' => $paymentData['vnp_ResponseCode'],
-                        'transaction_id' => $paymentData['vnp_TransactionNo'] ?? null,
+                        'transaction_id' => $paymentData['vnp_TransactionNo'],
                         'transaction_status' => $paymentData['vnp_TransactionStatus'],
                         'pay_date' => \Carbon\Carbon::createFromFormat('YmdHis', $paymentData['vnp_PayDate']),
                     ]);
+
+                    DB::commit();
+                    ProcessCheckout::dispatch($order->user, [], $order->id)->onQueue('checkout');
+                    return view('pages.pay-online', compact('paymentData'));
                 }
             }
 
             DB::commit();
             return view('pages.pay-online', compact('paymentData'));
         } catch (\Throwable $th) {
-            //throw $th;
             DB::rollBack();
-            return redirect()->route('home')->with('error', 'Thanh toán thất bại');
+            return redirect()->route('home')->with('error', 'Thanh toán thất bại.');
         }
     }
 }
