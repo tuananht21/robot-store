@@ -14,3 +14,8 @@ Broadcast::channel('admin.order-status', function ($user) {
 Broadcast::channel('order-status.{userId}', function ($user, $userId) {
     return (int) $user->id === (int) $userId;
 });
+
+// real time cho chat hỗ trợ
+Broadcast::channel('message.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});
