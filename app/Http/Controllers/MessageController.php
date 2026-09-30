@@ -16,7 +16,7 @@ class MessageController extends Controller
     public function index()
     {
         $groupedMessages = Message::get()->groupBy(function ($message) {
-            $ids = [$message->user_from_id,$message->user_to_id,];
+            $ids = [$message->user_from_id, $message->user_to_id,];
             sort($ids);
             return implode('-', $ids);
         });
@@ -24,7 +24,7 @@ class MessageController extends Controller
         $firstChatKey = $groupedMessages->keys()->first();
         $authUserId = Auth::id();
 
-        return view('admin.pages.message.index',compact('groupedMessages','firstChatKey','authUserId'));
+        return view('admin.pages.message.index', compact('groupedMessages', 'firstChatKey', 'authUserId'));
     }
 
     /**
@@ -57,7 +57,7 @@ class MessageController extends Controller
             ]);
 
             DB::commit();
-            broadcast(new MessageBroadcast($userFromId,$userToId,$request->message));
+            broadcast(new MessageBroadcast($userFromId, $userToId, $request->message));
 
             return response()->json([
                 'status' => 'success',
@@ -95,7 +95,7 @@ class MessageController extends Controller
     public function update()
     {
         $groupedMessages = Message::get()->groupBy(function ($message) {
-            $ids = [$message->user_from_id,$message->user_to_id];
+            $ids = [$message->user_from_id, $message->user_to_id];
             sort($ids);
             return implode('-', $ids);
         });
@@ -112,5 +112,21 @@ class MessageController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function conversation($userId)
+    {
+        $authUserId = Auth::id();
+        $userId = (int) $userId;
+
+        $messages = Message::where(function ($query) use ($authUserId, $userId) {
+            $query->where('user_from_id', $authUserId)->where('user_to_id', $userId);
+        })->orWhere(function ($query) use ($authUserId, $userId) {
+            $query->where('user_from_id', $userId)->where('user_to_id', $authUserId);
+        })->oldest()->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $messages,
+        ], 200);
     }
 }
