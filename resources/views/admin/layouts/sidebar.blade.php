@@ -86,6 +86,15 @@
                 <span>Đơn hàng</span>
             </a>
 
+            <a href="{{ route('admin.message.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition {{ request()->routeIs('admin.message.index') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+
+                <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5m7-2a8 8 0 1 1-16 0c0 1.4.36 2.72 1 3.86L4 20l4.14-1a8 8 0 0 0 11.86-7Z"/>
+                </svg>
+                <span>Hỗ trợ</span>
+            </a>
+
         </div>
     </nav>
 </aside>

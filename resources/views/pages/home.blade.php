@@ -87,4 +87,28 @@
         </div>
     </section>
 
+    {{-- Nút quay lên đầu trang --}}
+    <button
+        id="scrollToTop"
+        type="button"
+        aria-label="Lên đầu trang"
+        class="pointer-events-none fixed bottom-12 right-10 z-[9999] flex h-16 w-16 translate-y-5 scale-90 items-center justify-center rounded-full bg-blue-600 text-white opacity-0 shadow-lg transition-all duration-500 ease-out hover:bg-blue-700"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2.5"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M5 10l7-7m0 0l7 7m-7-7v18"
+            />
+        </svg>
+    </button>
+
+    @vite(['resources/js/home.js'])
 @endsection

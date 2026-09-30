@@ -10,6 +10,8 @@ use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\pageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\searchController;
+use App\Http\Controllers\MessageController;
 use App\Http\Middleware\roleMiddleware;
 
 // Route::get('/', function () {
@@ -20,6 +22,7 @@ Route::get('/', [pageController::class, 'home'])->name('home');
 Route::get('/products', [pageController::class, 'product'])->name('products');
 Route::get('/products/{slug}', [pageController::class, 'detail'])->name('product.detail');
 Route::get('/about', [pageController::class, 'about'])->name('about');
+Route::get('/search', [searchController::class, 'index'])->name('search');
 Route::get('/contact', [pageController::class, 'contact'])->name('contact');
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
@@ -29,6 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/message/store', [MessageController::class, 'store',])->name('message.store');
+    Route::get('/message/{userId}', [MessageController::class, 'conversation'])->name('message.conversation');
+
+    Route::get('/thank-you', function () {
+        return view('pages.thankyou');
+    })->name('thank-you');
 });
 
 Route::middleware(['auth', roleMiddleware::class])->prefix('admin')->as('admin.')->group(function () {
@@ -52,7 +62,8 @@ Route::middleware(['auth', roleMiddleware::class])->prefix('admin')->as('admin.'
     Route::get('/products/{slug}/edit', [productController::class, 'edit'])->name('products.edit');
     Route::put('/products/{slug}', [productController::class, 'update'])->name('products.update');
     Route::delete('/products/{slug}', [productController::class, 'destroy'])->name('products.destroy');
-    
+
+    // detail-products
     Route::get('/products/{product}/detail-products', [detailProductController::class, 'index'])->name('products.detail-products.index');
     Route::get('/products/{product}/detail-products/create', [detailProductController::class, 'create'])->name('products.detail-products.create');
     Route::post('/products/{product}/detail-products', [detailProductController::class, 'store'])->name('products.detail-products.store');
@@ -60,6 +71,7 @@ Route::middleware(['auth', roleMiddleware::class])->prefix('admin')->as('admin.'
     Route::put('/products/{product}/detail-products/{detailProduct}', [detailProductController::class, 'update'])->name('products.detail-products.update');
     Route::delete('/products/{product}/detail-products/{detailProduct}', [detailProductController::class, 'destroy'])->name('products.detail-products.destroy');
 
+    // stock
     Route::get('/detail-products/{detailID}/in-stock', [inStockController::class, 'index'])->name('detail-products.in-stock.index');
     Route::put('/detail-products/{detailID}/in-stock', [inStockController::class, 'update'])->name('detail-products.in-stock.update');
 
@@ -67,6 +79,9 @@ Route::middleware(['auth', roleMiddleware::class])->prefix('admin')->as('admin.'
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+
+    Route::get('/messages', [MessageController::class, 'index'])->name('message.index');
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/api.php';

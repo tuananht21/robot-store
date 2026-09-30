@@ -23,7 +23,7 @@
         </main>
     </div>
 
-    @vite(['resources/js/admin.js'])
+    @vite(['resources/js/app.js'])
     @stack('script')
 
 </body>
