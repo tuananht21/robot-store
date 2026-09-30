@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\MessageBroadcast;
 use App\Models\Message;
+use App\Notifications\AdminMessageNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -58,6 +59,18 @@ class MessageController extends Controller
 
             DB::commit();
             broadcast(new MessageBroadcast($userFromId, $userToId, $request->message));
+
+            if ($userFromId !== 1 && $userToId === 1) {
+                $admin = \App\Models\User::find(1);
+
+                if ($admin) {
+                    $admin->notify(new AdminMessageNotification(
+                        $userFromId,
+                        Auth::user()->name,
+                        $request->message
+                    ));
+                }
+            }
 
             return response()->json([
                 'status' => 'success',
