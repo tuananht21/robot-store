@@ -19,7 +19,6 @@
 
                 <form id="loginForm" method="POST" action="{{ route('login') }}" class="space-y-5">
                     @csrf
-
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
@@ -61,11 +60,6 @@
                         <span id="loginButtonText">Đăng nhập</span>
 
                         <span id="loginLoading" class="hidden items-center justify-center gap-2">
-                            <svg class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                            </svg>
                             Đang đăng nhập...
                         </span>
                     </button>
@@ -94,11 +88,6 @@
                     </span>
 
                     <span id="googleLoading" class="hidden items-center justify-center gap-2">
-                        <svg class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                        </svg>
                         Đang kết nối Google...
                     </span>
                 </a>
@@ -106,35 +95,11 @@
                 <div class="mt-6 text-center">
                     <p class="text-sm text-gray-500">
                         Chưa có tài khoản?
-                        <a href="{{ route('register') }}" class="font-semibold text-gray-900 hover:underline">Đăng ký
-                            ngay</a>
+                        <a href="{{ route('register') }}" class="font-semibold text-gray-900 hover:underline">Đăng
+                            kýngay</a>
                     </p>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function() {
-            const button = document.getElementById('loginButton');
-            const text = document.getElementById('loginButtonText');
-            const loading = document.getElementById('loginLoading');
-
-            button.disabled = true;
-            text.classList.add('hidden');
-            loading.classList.remove('hidden');
-            loading.classList.add('flex');
-        });
-
-        document.getElementById('googleLoginButton').addEventListener('click', function () {
-        const button = this;
-        const content = document.getElementById('googleButtonContent');
-        const loading = document.getElementById('googleLoading');
-
-        button.classList.add('pointer-events-none', 'opacity-70');
-        content.classList.add('hidden');
-        loading.classList.remove('hidden');
-        loading.classList.add('flex');
-    });
-    </script>
 @endsection
