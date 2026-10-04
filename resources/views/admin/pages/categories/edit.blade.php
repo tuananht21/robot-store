@@ -7,9 +7,7 @@
 @section('content')
 
 <div class="mx-auto max-w-2xl">
-
     <div class="rounded-xl bg-white p-6 shadow-sm">
-
         <div class="mb-6">
             <h1 class="text-xl font-bold text-gray-800">Chỉnh sửa danh mục</h1>
             <p class="mt-1 text-sm text-gray-500">
@@ -65,17 +63,12 @@
                    class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
                     Hủy
                 </a>
-
                 <button type="submit"
                         class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
                     Cập nhật
                 </button>
             </div>
-
         </form>
-
     </div>
-
 </div>
-
 @endsection

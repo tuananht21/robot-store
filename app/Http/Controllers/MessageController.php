@@ -60,18 +60,6 @@ class MessageController extends Controller
             DB::commit();
             broadcast(new MessageBroadcast($userFromId, $userToId, $request->message));
 
-            if ($userFromId !== 1 && $userToId === 1) {
-                $admin = \App\Models\User::find(1);
-
-                if ($admin) {
-                    $admin->notify(new AdminMessageNotification(
-                        $userFromId,
-                        Auth::user()->name,
-                        $request->message
-                    ));
-                }
-            }
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'Gửi tin nhắn thành công!',

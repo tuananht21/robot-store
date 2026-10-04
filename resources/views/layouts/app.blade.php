@@ -38,14 +38,13 @@
         <button
             id="openChat"
             type="button"
-            class="fixed bottom-20 right-16 z-[9999] flex cursor-pointer items-center gap-2 rounded-full bg-black px-6 py-4 text-sm font-medium text-white shadow-xl transition hover:bg-gray-800"
+            class="fixed bottom-4 right-4 z-[9999] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-black text-white shadow-xl transition hover:bg-gray-800"
         >
-            <i class="fa-solid fa-comments"></i>
-            <span>Liên hệ</span>
+            <i class="fa-solid fa-comments text-xl"></i>
         </button>
 
         <!-- Chat modal -->
-        <div id="chatModal" class="fixed bottom-8 right-8 z-[9999] hidden">
+        <div id="chatModal" class="fixed bottom-20 right-4 z-[9999] hidden">
             <div class="flex h-[480px] w-[360px] flex-col overflow-hidden rounded-2xl border border-gray-800 bg-white shadow-2xl">
                 <!-- Header -->
                 <div class="flex items-center justify-between bg-black px-4 py-3 text-white">
