@@ -1,5 +1,5 @@
 # Robot Store
-Dự án robot store là một website thương mại điện tử được xây dựng để làm project kết thúc học phần môn học với các tính năng nổi bật
+Dự án robot store là một website được xây dựng để làm project kết thúc học phần môn học với các tính năng nổi bật
 như hỗ trợ chat chăm sóc khách hàng real time cơ bản giữa user và admin, thanh toán bằng VNPay sandbox test, hãy cùng nhau xây dựng
 và khám phá:
 
