@@ -70,11 +70,8 @@
                 </div>
 
                 <div class="relative overflow-hidden rounded-3xl bg-gray-100">
-                    <img
-                        src="{{ asset('images/banner-robot.png') }}"
-                        alt="Robot Store"
-                        class="h-[360px] w-full object-cover sm:h-[420px]"
-                    >
+                    <img src="{{ asset('images/banner-robot.png') }}" alt="Robot Store"
+                        class="h-[360px] w-full object-cover sm:h-[420px]">
 
                     <div class="absolute inset-0 bg-gradient-to-t from-gray-950/50 to-transparent"></div>
 
@@ -114,7 +111,8 @@
             <div class="mt-12 grid gap-6 md:grid-cols-2">
 
                 {{-- Mission --}}
-                <div class="rounded-2xl border border-gray-200 bg-white p-8 transition hover:-translate-y-1 hover:shadow-lg">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-8 transition hover:-translate-y-1 hover:shadow-lg">
                     <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-2xl">
                         🎯
                     </div>
@@ -131,7 +129,8 @@
                 </div>
 
                 {{-- Vision --}}
-                <div class="rounded-2xl border border-gray-200 bg-white p-8 transition hover:-translate-y-1 hover:shadow-lg">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-8 transition hover:-translate-y-1 hover:shadow-lg">
                     <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-2xl">
                         🚀
                     </div>
@@ -253,10 +252,8 @@
                     </p>
                 </div>
 
-                <a
-                    href="{{ route('products') }}"
-                    class="text-sm font-semibold text-gray-900 transition hover:text-blue-600"
-                >
+                <a href="{{ route('products') }}"
+                    class="text-sm font-semibold text-gray-900 transition hover:text-blue-600">
                     Xem sản phẩm →
                 </a>
             </div>
@@ -327,10 +324,8 @@
                     robot phù hợp với nhu cầu sử dụng.
                 </p>
 
-                <a
-                    href="{{ route('products') }}"
-                    class="mt-8 inline-flex rounded-lg bg-white px-6 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-200"
-                >
+                <a href="{{ route('products') }}"
+                    class="mt-8 inline-flex rounded-lg bg-white px-6 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-200">
                     Khám phá sản phẩm
                     <span class="ml-2">→</span>
                 </a>

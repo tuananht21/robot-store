@@ -27,8 +27,7 @@
                                 @if ($product->thumbnail)
                                     <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="{{ $product->name }}"
                                         class="h-full w-full object-cover transition duration-300 hover:scale-105">
-                                @else
-                                    <span class="text-6xl">🤖</span>
+                                    
                                 @endif
                             </div>
                             <div class="p-5">

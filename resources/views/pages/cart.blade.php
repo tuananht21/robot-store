@@ -16,7 +16,6 @@
         </section>
 
         @if ($cartItems->isNotEmpty())
-
             {{-- Danh sách sản phẩm --}}
             <div class="overflow-x-auto bg-white rounded-xl shadow-lg p-4">
                 <table class="table-auto w-full border-collapse text-black">
@@ -37,7 +36,6 @@
                         @endphp
 
                         @foreach ($cartItems as $item)
-
                             @php
                                 $price = $item->detailProduct->price;
                                 $itemTotal = $price * $item->quantity;
@@ -50,13 +48,12 @@
                                 {{-- Hình ảnh --}}
                                 <td class="border border-gray-300 px-4 py-3">
                                     @if ($image)
-                                        <img
-                                            src="{{ Storage::url($image->path) }}"
+                                        <img src="{{ Storage::url($image->path) }}"
                                             alt="{{ $item->detailProduct->product->name }}"
-                                            class="w-20 h-20 object-cover mx-auto rounded-lg"
-                                        >
+                                            class="w-20 h-20 object-cover mx-auto rounded-lg">
                                     @else
-                                        <div class="w-20 h-20 mx-auto flex items-center justify-center bg-gray-200 rounded-lg">
+                                        <div
+                                            class="w-20 h-20 mx-auto flex items-center justify-center bg-gray-200 rounded-lg">
                                             <i class="fa-solid fa-robot text-2xl text-gray-500"></i>
                                         </div>
                                     @endif
@@ -80,16 +77,15 @@
 
                                             <input type="hidden" name="decrease" value="true">
 
-                                            <button
-                                                type="submit"
-                                                class="w-9 h-9 rounded-l-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
-                                            >
+                                            <button type="submit"
+                                                class="w-9 h-9 rounded-l-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center">
                                                 <i class="fa-solid fa-minus"></i>
                                             </button>
                                         </form>
 
                                         {{-- Số lượng --}}
-                                        <span class="w-12 h-9 flex items-center justify-center border-t border-b border-gray-300 font-semibold">
+                                        <span
+                                            class="w-12 h-9 flex items-center justify-center border-t border-b border-gray-300 font-semibold">
                                             {{ $item->quantity }}
                                         </span>
 
@@ -100,10 +96,8 @@
 
                                             <input type="hidden" name="increase" value="true">
 
-                                            <button
-                                                type="submit"
-                                                class="w-9 h-9 rounded-r-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
-                                            >
+                                            <button type="submit"
+                                                class="w-9 h-9 rounded-r-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </form>
@@ -123,18 +117,13 @@
 
                                 {{-- Xóa --}}
                                 <td class="border border-gray-300 px-4 py-3 text-center">
-                                    <form
-                                        action="{{ route('cart.destroy', $item->id) }}"
-                                        method="POST"
-                                        onsubmit="handleDeleteCart(event)"
-                                    >
+                                    <form action="{{ route('cart.destroy', $item->id) }}" method="POST"
+                                        onsubmit="handleDeleteCart(event)">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button
-                                            type="submit"
-                                            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-                                        >
+                                        <button type="submit"
+                                            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
                                             <i class="fa-solid fa-trash mr-1"></i>
                                             Xóa
                                         </button>
@@ -142,7 +131,6 @@
                                 </td>
 
                             </tr>
-
                         @endforeach
                     </tbody>
                 </table>
@@ -164,10 +152,8 @@
 
                     <div class="border-t border-gray-200 pt-4">
 
-                        <a
-                            href="{{ route('checkout.index') }}"
-                            class="w-full inline-flex justify-center items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
-                        >
+                        <a href="{{ route('checkout.index') }}"
+                            class="w-full inline-flex justify-center items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
                             <i class="fa-solid fa-credit-card"></i>
                             Thanh toán
                         </a>
@@ -175,9 +161,7 @@
                     </div>
                 </div>
             </div>
-
         @else
-
             {{-- Giỏ hàng trống --}}
             <div class="bg-white rounded-xl shadow-lg p-10 text-center text-gray-900">
 
@@ -193,16 +177,13 @@
                     Bạn chưa có sản phẩm nào trong giỏ hàng.
                 </p>
 
-                <a
-                    href="{{ route('home') }}"
-                    class="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
-                >
+                <a href="{{ route('home') }}"
+                    class="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
                     <i class="fa-solid fa-robot"></i>
                     Tiếp tục mua sắm
                 </a>
 
             </div>
-
         @endif
 
     </div>

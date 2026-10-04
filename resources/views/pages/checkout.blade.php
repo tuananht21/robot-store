@@ -42,13 +42,8 @@
                                 Họ và tên
                             </label>
 
-                            <input
-                                type="text"
-                                name="name"
-                                value="{{ old('name', Auth::user()->name ?? '') }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
-                                placeholder="Nhập họ và tên"
-                            >
+                            <input type="text" name="name" value="{{ old('name', Auth::user()->name ?? '') }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="Nhập họ và tên">
                         </div>
 
                         <div>
@@ -56,13 +51,9 @@
                                 Số điện thoại
                             </label>
 
-                            <input
-                                type="text"
-                                name="phone"
-                                value="{{ old('phone') }}"
+                            <input type="text" name="phone" value="{{ old('phone') }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3"
-                                placeholder="0912345678 hoặc +84912345678"
-                            >
+                                placeholder="0912345678 hoặc +84912345678">
                         </div>
 
                         <div class="md:col-span-2">
@@ -70,13 +61,8 @@
                                 Địa chỉ
                             </label>
 
-                            <input
-                                type="text"
-                                name="address"
-                                value="{{ old('address') }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
-                                placeholder="Số nhà, tên đường"
-                            >
+                            <input type="text" name="address" value="{{ old('address') }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="Số nhà, tên đường">
                         </div>
 
                         <div>
@@ -84,13 +70,8 @@
                                 Phường/Xã
                             </label>
 
-                            <input
-                                type="text"
-                                name="ward"
-                                value="{{ old('ward') }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
-                                placeholder="Nhập phường/xã"
-                            >
+                            <input type="text" name="ward" value="{{ old('ward') }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="Nhập phường/xã">
                         </div>
 
                         <div>
@@ -98,13 +79,9 @@
                                 Tỉnh/Thành phố
                             </label>
 
-                            <input
-                                type="text"
-                                name="provinces"
-                                value="{{ old('provinces') }}"
+                            <input type="text" name="provinces" value="{{ old('provinces') }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3"
-                                placeholder="Nhập tỉnh/thành phố"
-                            >
+                                placeholder="Nhập tỉnh/thành phố">
                         </div>
 
                         <div class="md:col-span-2">
@@ -112,12 +89,8 @@
                                 Ghi chú
                             </label>
 
-                            <textarea
-                                name="note"
-                                rows="4"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
-                                placeholder="Ghi chú cho đơn hàng..."
-                            >{{ old('note') }}</textarea>
+                            <textarea name="note" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                                placeholder="Ghi chú cho đơn hàng...">{{ old('note') }}</textarea>
                         </div>
 
                     </div>
@@ -132,12 +105,8 @@
                         <div class="space-y-3">
 
                             <label class="flex items-center gap-3 border border-gray-300 rounded-lg p-4 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="payment"
-                                    value="cod"
-                                    {{ old('payment', 'cod') === 'cod' ? 'checked' : '' }}
-                                >
+                                <input type="radio" name="payment" value="cod"
+                                    {{ old('payment', 'cod') === 'cod' ? 'checked' : '' }}>
 
                                 <div>
                                     <div class="font-semibold">
@@ -151,12 +120,8 @@
                             </label>
 
                             <label class="flex items-center gap-3 border border-gray-300 rounded-lg p-4 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="payment"
-                                    value="online"
-                                    {{ old('payment') === 'online' ? 'checked' : '' }}
-                                >
+                                <input type="radio" name="payment" value="online"
+                                    {{ old('payment') === 'online' ? 'checked' : '' }}>
 
                                 <div>
                                     <div class="font-semibold">
@@ -185,7 +150,6 @@
                     <div class="space-y-4">
 
                         @foreach ($cartItems as $item)
-
                             @php
                                 $price = $item->detailProduct->price;
                                 $itemTotal = $price * $item->quantity;
@@ -195,11 +159,9 @@
                             <div class="flex gap-3 border-b border-gray-200 pb-4">
 
                                 @if ($image)
-                                    <img
-                                        src="{{ Storage::url($image->path) }}"
+                                    <img src="{{ Storage::url($image->path) }}"
                                         alt="{{ $item->detailProduct->product->name }}"
-                                        class="w-20 h-20 object-cover rounded-lg"
-                                    >
+                                        class="w-20 h-20 object-cover rounded-lg">
                                 @else
                                     <div class="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
                                         <i class="fa-solid fa-robot text-2xl text-gray-500"></i>
@@ -223,7 +185,6 @@
                                 </div>
 
                             </div>
-
                         @endforeach
 
                     </div>
@@ -260,24 +221,16 @@
 
                     </div>
 
-                    <input
-                        type="hidden"
-                        name="shipping_fee"
-                        value="0"
-                    >
+                    <input type="hidden" name="shipping_fee" value="0">
 
-                    <button
-                        type="submit"
-                        class="w-full mt-6 bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
-                    >
+                    <button type="submit"
+                        class="w-full mt-6 bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
                         <i class="fa-solid fa-check mr-2"></i>
                         Đặt hàng
                     </button>
 
-                    <a
-                        href="{{ route('cart') }}"
-                        class="w-full mt-3 inline-flex justify-center items-center gap-2 border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
-                    >
+                    <a href="{{ route('cart') }}"
+                        class="w-full mt-3 inline-flex justify-center items-center gap-2 border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
                         <i class="fa-solid fa-arrow-left"></i>
                         Quay lại giỏ hàng
                     </a>

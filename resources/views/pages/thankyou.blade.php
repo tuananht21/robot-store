@@ -30,18 +30,14 @@
 
                 {{-- Button --}}
                 <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-                    <a
-                        href="#"
-                        class="inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
-                    >
+                    <a href="#"
+                        class="inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
                         <i class="fa-solid fa-box"></i>
                         Xem đơn hàng
                     </a>
 
-                    <a
-                        href="{{ route('home') }}"
-                        class="inline-flex items-center justify-center gap-2 border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
-                    >
+                    <a href="{{ route('home') }}"
+                        class="inline-flex items-center justify-center gap-2 border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
                         <i class="fa-solid fa-house"></i>
                         Tiếp tục mua sắm
                     </a>
