@@ -19,3 +19,13 @@ Broadcast::channel('order-status.{userId}', function ($user, $userId) {
 Broadcast::channel('message.{userId}', function ($user, $userId) {
     return (int) $user->id === (int) $userId;
 });
+
+// Realtime khi xử lý đơn hàng cho user
+Broadcast::channel('orders.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});
+
+// Realtime đơn hàng cho admin
+Broadcast::channel('user-order', function ($user) {
+    return $user->role === 1;
+});
