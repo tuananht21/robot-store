@@ -95,6 +95,13 @@
                 <span>Hỗ trợ</span>
             </a>
 
+            <a href="{{ route('admin.users.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition {{ request()->routeIs('admin.users.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6 2a4 4 0 1 1 0-8m4 16v-2a4 4 0 0 0-3-3.87"/>
+                </svg>
+                <span>Users</span>
+            </a>
         </div>
     </nav>
 </aside>

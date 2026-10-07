@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessCheckout;
-use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +15,6 @@ class paymentController extends Controller
     {
         try {
 
-            DB::beginTransaction();
             $paymentData = $request->all();
             $requiredFields = [
                 'vnp_TxnRef',
@@ -27,33 +26,48 @@ class paymentController extends Controller
                 'vnp_SecureHash',
             ];
 
-            $missingFields = array_filter($requiredFields, function ($field) use ($paymentData) {
-                return !isset($paymentData[$field]) || $paymentData[$field] === '';
-            });
-
-            if (!empty($missingFields)) {
-                DB::rollBack();
-
-                return redirect()->route('home')->with('error', 'Thiếu dữ liệu thanh toán: ' . implode(', ', $missingFields));
+            foreach ($requiredFields as $field) {
+                if (!isset($paymentData[$field]) || $paymentData[$field] === '') {
+                    return redirect()->route('home')->with('error', 'Thiếu dữ liệu thanh toán.');
+                }
             }
 
-            $order = Order::findOrFail($paymentData['vnp_TxnRef']);
+            // Kiểm tra chữ ký VNPay.
+            $secureHash = $paymentData['vnp_SecureHash'];
+            unset($paymentData['vnp_SecureHash'], $paymentData['vnp_SecureHashType']);
 
-            if ($order->payment_method !== false) {
-                DB::rollBack();
+            ksort($paymentData);
+            $checkHash = hash_hmac('sha512',http_build_query($paymentData),env('VNPAY_HASH_SECRET'));
 
+            if (!hash_equals($checkHash, $secureHash)) {
+                return redirect()->route('home')->with('error', 'Chữ ký thanh toán không hợp lệ.');
+            }
+
+            $order = Order::find($paymentData['vnp_TxnRef']);
+
+            if (!$order) {
+                return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng.');
+            }
+
+            // Chỉ xử lý đơn hàng thanh toán bằng VNPay.
+            if ($order->payment_method != 0) {
                 return redirect()->route('home')->with('error', 'Đơn hàng không sử dụng thanh toán online.');
             }
 
-            if ($paymentData['vnp_TransactionStatus'] == '00' && $paymentData['vnp_ResponseCode'] == '00') {
-                $isPayment = Payment::where('order_id', $order->id)->first();
+            // VNPay gửi số tiền theo đơn vị VND x 100.
+            if ($order->total_amount * 100 != $paymentData['vnp_Amount']) {
+                return redirect()->route('home')->with('error', 'Số tiền thanh toán không hợp lệ.');
+            }
 
-                if (!$isPayment) {
-                    $cart = Cart::where('user_id', $order->user_id)->with('detailProduct')->get();
+            // Chỉ xử lý khi giao dịch thành công.
+            $isSuccess = $paymentData['vnp_TransactionStatus'] === '00'
+                && $paymentData['vnp_ResponseCode'] === '00';
 
-                    if ($cart->isEmpty()) {
-                        DB::rollBack();
-                        return redirect()->route('home')->with('error', 'Giỏ hàng không còn sản phẩm để xử lý đơn hàng.');
+            if ($isSuccess) {
+                $paymentCreated = DB::transaction(function () use ($order, $paymentData) {
+                    // Tránh tạo Payment trùng khi VNPay callback nhiều lần.
+                    if (Payment::where('order_id', $order->id)->exists()) {
+                        return false;
                     }
 
                     $order->payment_status = true;
@@ -66,19 +80,20 @@ class paymentController extends Controller
                         'response_code' => $paymentData['vnp_ResponseCode'],
                         'transaction_id' => $paymentData['vnp_TransactionNo'],
                         'transaction_status' => $paymentData['vnp_TransactionStatus'],
-                        'pay_date' => \Carbon\Carbon::createFromFormat('YmdHis', $paymentData['vnp_PayDate']),
+                        'pay_date' => Carbon::createFromFormat('YmdHis', $paymentData['vnp_PayDate']),
                     ]);
 
-                    DB::commit();
+                    return true;
+                });
+
+                if ($paymentCreated) {
                     ProcessCheckout::dispatch($order->user, [], $order->id)->onQueue('checkout');
-                    return view('pages.pay-online', compact('paymentData'));
                 }
             }
 
-            DB::commit();
             return view('pages.pay-online', compact('paymentData'));
         } catch (\Throwable $th) {
-            DB::rollBack();
+            report($th);
             return redirect()->route('home')->with('error', 'Thanh toán thất bại.');
         }
     }

@@ -42,8 +42,10 @@
                                 Họ và tên
                             </label>
 
-                            <input type="text" name="name" value="{{ old('name', Auth::user()->name ?? '') }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="Nhập họ và tên">
+                            <input type="text" name="name"
+                                value="{{ old('name', Auth::user()->name ?? '') }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                                placeholder="Nhập họ và tên">
                         </div>
 
                         <div>
@@ -62,7 +64,8 @@
                             </label>
 
                             <input type="text" name="address" value="{{ old('address') }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="Số nhà, tên đường">
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                                placeholder="Số nhà, tên đường">
                         </div>
 
                         <div>
@@ -71,7 +74,8 @@
                             </label>
 
                             <input type="text" name="ward" value="{{ old('ward') }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="Nhập phường/xã">
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                                placeholder="Nhập phường/xã">
                         </div>
 
                         <div>
@@ -89,7 +93,8 @@
                                 Ghi chú
                             </label>
 
-                            <textarea name="note" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                            <textarea name="note" rows="4"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3"
                                 placeholder="Ghi chú cho đơn hàng...">{{ old('note') }}</textarea>
                         </div>
 
@@ -153,13 +158,13 @@
                             @php
                                 $price = $item->detailProduct->price;
                                 $itemTotal = $price * $item->quantity;
-                                $image = $item->detailProduct->images->first();
+                                $image = $item->detailProduct->product->thumbnail;
                             @endphp
 
                             <div class="flex gap-3 border-b border-gray-200 pb-4">
 
                                 @if ($image)
-                                    <img src="{{ Storage::url($image->path) }}"
+                                    <img src="{{ Storage::url($image) }}"
                                         alt="{{ $item->detailProduct->product->name }}"
                                         class="w-20 h-20 object-cover rounded-lg">
                                 @else

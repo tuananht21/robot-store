@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Giỏ hàng')
 
 @push('style')
 @endpush
@@ -40,7 +41,7 @@
                                 $price = $item->detailProduct->price;
                                 $itemTotal = $price * $item->quantity;
                                 $totalPrice += $itemTotal;
-                                $image = $item->detailProduct->images->first();
+                                $image = $item->detailProduct->product->thumbnail;
                             @endphp
 
                             <tr class="hover:bg-gray-50">
@@ -48,12 +49,11 @@
                                 {{-- Hình ảnh --}}
                                 <td class="border border-gray-300 px-4 py-3">
                                     @if ($image)
-                                        <img src="{{ Storage::url($image->path) }}"
+                                        <img src="{{ Storage::url($image) }}"
                                             alt="{{ $item->detailProduct->product->name }}"
                                             class="w-20 h-20 object-cover mx-auto rounded-lg">
                                     @else
-                                        <div
-                                            class="w-20 h-20 mx-auto flex items-center justify-center bg-gray-200 rounded-lg">
+                                        <div class="w-20 h-20 mx-auto flex items-center justify-center bg-gray-200 rounded-lg">
                                             <i class="fa-solid fa-robot text-2xl text-gray-500"></i>
                                         </div>
                                     @endif
@@ -84,8 +84,7 @@
                                         </form>
 
                                         {{-- Số lượng --}}
-                                        <span
-                                            class="w-12 h-9 flex items-center justify-center border-t border-b border-gray-300 font-semibold">
+                                        <span class="w-12 h-9 flex items-center justify-center border-t border-b border-gray-300 font-semibold">
                                             {{ $item->quantity }}
                                         </span>
 
@@ -151,14 +150,13 @@
                     </div>
 
                     <div class="border-t border-gray-200 pt-4">
-
                         <a href="{{ route('checkout.index') }}"
                             class="w-full inline-flex justify-center items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
                             <i class="fa-solid fa-credit-card"></i>
                             Thanh toán
                         </a>
-
                     </div>
+
                 </div>
             </div>
         @else
@@ -193,7 +191,9 @@
     <script>
         function handleDeleteCart(event) {
             event.preventDefault();
+
             const isDelete = confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?');
+
             if (isDelete) {
                 event.target.submit();
             }

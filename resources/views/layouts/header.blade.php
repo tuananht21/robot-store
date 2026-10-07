@@ -37,7 +37,7 @@
             <div class="hidden shrink-0 items-center gap-3 md:flex">
 
                 {{-- Cart --}}
-                <a href="#" class="relative flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-100 hover:text-gray-900">
+                <a href="{{ route('cart') }}" class="relative flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-100 hover:text-gray-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1 5h13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
                     </svg>
@@ -66,12 +66,15 @@
                             </div>
 
                             <div class="p-2">
-                                @if (auth()->user()->role == 1)
-                                    <a href="{{ route('admin.dashboard') }}" class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
-                                        Dashboard
-                                    </a>
-                                @endif
+                                {{-- Orders --}}
+                                <a href="{{ route('orders.index') }}" class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5h6m-8 3h10M7 5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-8 5h6m-6 4h6m-6 4h4" />
+                                    </svg>
+                                    Chi tiết đơn hàng
+                                </a>
 
+                                {{-- Logout --}}
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50">
@@ -124,7 +127,7 @@
                     <div class="mt-3 border-t border-gray-100 pt-3">
 
                         {{-- Mobile cart --}}
-                        <a href="#" class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <a href="{{ route('cart') }}" class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1 5h13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
                             </svg>
@@ -138,12 +141,13 @@
                                 <p class="mt-1 break-all text-xs text-gray-500">{{ auth()->user()->email }}</p>
                             </div>
 
-                            {{-- Mobile dashboard --}}
-                            @if (auth()->user()->role == 1)
-                                <a href="{{ route('admin.dashboard') }}" class="mt-2 flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100">
-                                    Dashboard
-                                </a>
-                            @endif
+                            {{-- Mobile orders --}}
+                            <a href="{{ route('orders.index') }}" class="mt-2 flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5h6m-8 3h10M7 5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-8 5h6m-6 4h6m-6 4h4" />
+                                </svg>
+                                Chi tiết đơn hàng
+                            </a>
 
                             {{-- Mobile logout --}}
                             <form action="{{ route('logout') }}" method="POST" class="mt-2">

@@ -11,10 +11,6 @@ Broadcast::channel('admin.order-status', function ($user) {
     return $user->role === 1;
 });
 
-Broadcast::channel('order-status.{userId}', function ($user, $userId) {
-    return (int) $user->id === (int) $userId;
-});
-
 // real time cho chat hỗ trợ
 Broadcast::channel('message.{userId}', function ($user, $userId) {
     return (int) $user->id === (int) $userId;
@@ -22,10 +18,14 @@ Broadcast::channel('message.{userId}', function ($user, $userId) {
 
 // Realtime khi xử lý đơn hàng cho user
 Broadcast::channel('orders.{userId}', function ($user, $userId) {
-    return (int) $user->id === (int) $userId;
+    return $user->id == $userId;
 });
 
 // Realtime đơn hàng cho admin
 Broadcast::channel('user-order', function ($user) {
     return $user->role === 1;
+});
+
+Broadcast::channel('order-status.{userId}', function ($user, $userId) {
+    return $user->id == $userId;
 });

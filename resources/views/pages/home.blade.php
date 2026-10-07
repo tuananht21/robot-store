@@ -37,6 +37,36 @@
                                 <h3 class="mt-2 line-clamp-1 font-semibold text-gray-900">
                                     {{ $product->name }}
                                 </h3>
+                                @php
+                                    $reviews = $product->detailProducts
+                                        ->flatMap(fn($detail) => $detail->reviews);
+
+                                    $reviewCount = $reviews->count();
+
+                                    $averageRating = $reviewCount > 0
+                                        ? round($reviews->avg('rating'), 1)
+                                        : 0;
+                                @endphp
+
+                                @if ($reviewCount > 0)
+                                    <div class="mt-2 flex items-center gap-2">
+                                        <div class="flex items-center">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i
+                                                    class="fa-solid fa-star text-sm {{ $i <= round($averageRating) ? 'text-yellow-400' : 'text-gray-300' }}">
+                                                </i>
+                                            @endfor
+                                        </div>
+
+                                        <span class="text-sm font-semibold text-gray-700">
+                                            {{ number_format($averageRating, 1) }}
+                                        </span>
+
+                                        <span class="text-xs text-gray-400">
+                                            ({{ $reviewCount }} đánh giá)
+                                        </span>
+                                    </div>
+                                @endif
                                 <p class="mt-2 line-clamp-2 text-sm text-gray-500">
                                     {{ $product->description ?? 'Sản phẩm robot hiện đại và tiện lợi.' }}
                                 </p>

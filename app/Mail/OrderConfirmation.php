@@ -53,4 +53,9 @@ class OrderConfirmation extends Mailable
     {
         return [];
     }
+
+    public function build()
+    {
+        return $this->subject('Thank you for your order')->markdown('pages.checkout-email')->with(['order' => $this->order,]);
+    }
 }

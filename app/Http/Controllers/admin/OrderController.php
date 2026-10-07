@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Events\OrderStatusBroadcast;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -37,8 +38,7 @@ class OrderController extends Controller
         if ($search) {
             $orders = $orders->where(function ($query) use ($search) {
                 $query->where('id', 'like', '%' . $search . '%')
-                    ->orWhere('customer_name', 'like', '%' . $search . '%')
-                    ->orWhere('phone', 'like', '%' . $search . '%');
+                    ->orWhere('customer_name', 'like', '%' . $search . '%')->orWhere('phone', 'like', '%' . $search . '%');
             });
         }
 
@@ -71,7 +71,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $status = (int) $request->input('status');
+        $status = $request->input('status');
 
         if ($status < 1 || $status > 4) {
             return back()->with('error', 'Trạng thái đơn hàng không hợp lệ!');
@@ -82,16 +82,16 @@ class OrderController extends Controller
         }
 
         $order->status = $status;
-
-        if ($status === 3) {
-            $order->payment_status = true;
-        }
-
-        if ($status === 4) {
-            $order->payment_status = false;
-        }
-
         $order->save();
+
+        event(new OrderStatusBroadcast(
+            $order->id,
+            'success',
+            'Trạng thái đơn hàng đã được cập nhật.',
+            $order->status,
+            $order->user_id,
+            'user'
+        ));
 
         return back()->with('success', 'Cập nhật đơn hàng thành công!');
     }

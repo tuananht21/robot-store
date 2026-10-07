@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\inStockController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\MessageController;
 use App\Http\Middleware\roleMiddleware;
+use App\Http\Controllers\admin\UserController;
 
 Route::middleware(['auth', roleMiddleware::class])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
@@ -49,5 +50,11 @@ Route::middleware(['auth', roleMiddleware::class])->prefix('admin')->as('admin.'
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
 
+    // user
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // message
     Route::get('/messages', [MessageController::class, 'index'])->name('message.index');
 });

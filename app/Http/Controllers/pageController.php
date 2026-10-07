@@ -12,7 +12,7 @@ class pageController extends Controller
     {
         $categories = Category::withCount('products')->get();
 
-        $products = Product::with(['category', 'detailProducts'])->where('status', true)->latest()->take(8)->get();
+        $products = Product::with(['category','detailProducts.reviews',])->where('status', true)->latest()->take(8)->get();
 
         return view('pages.home', compact('categories', 'products'));
     }

@@ -1,8 +1,9 @@
 @extends('admin.layouts.app')
+
 @section('title', 'Danh mục sản phẩm')
 @section('header', 'Danh mục sản phẩm')
-@section('content')
 
+@section('content')
     <div class="space-y-6">
         {{-- Header --}}
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -45,15 +46,19 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
                                 #
                             </th>
+
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
                                 Name
                             </th>
+
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
                                 Slug
                             </th>
+
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
                                 Ngày tạo
                             </th>
+
                             <th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">
                                 Action
                             </th>
@@ -61,11 +66,12 @@
                     </thead>
 
                     <tbody class="divide-y divide-gray-100 bg-white">
-                        @forelse ($categories as $category)
+                        @forelse ($categories as $index => $category)
                             <tr class="transition hover:bg-gray-50">
                                 <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                    {{ $category->id }}
+                                    {{ $categories->firstItem() + $index }}
                                 </td>
+
                                 <td class="whitespace-nowrap px-6 py-4">
                                     <div class="font-medium text-gray-900">
                                         {{ $category->name }}
@@ -84,7 +90,6 @@
 
                                 <td class="whitespace-nowrap px-6 py-4">
                                     <div class="flex justify-end gap-2">
-
                                         {{-- Edit --}}
                                         <a href="{{ route('admin.categories.edit', $category->slug) }}"
                                             class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-100">
@@ -95,10 +100,9 @@
                                         <form action="{{ route('admin.categories.destroy', $category->slug) }}"
                                             method="POST"
                                             onsubmit="return confirm('Bạn có chắc muốn xóa category này?')">
-                                        
                                             @csrf
                                             @method('DELETE')
-                                        
+
                                             <button type="submit"
                                                 class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100">
                                                 Xóa
@@ -107,13 +111,13 @@
                                     </div>
                                 </td>
                             </tr>
-
                         @empty
                             <tr>
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <div class="text-gray-500">
                                         Chưa có danh mục sản phẩm nào.
                                     </div>
+
                                     <a href="{{ route('admin.categories.create') }}"
                                         class="mt-3 inline-block text-sm font-medium text-blue-600 hover:underline">
                                         Thêm danh mục sản phẩm đầu tiên
@@ -121,10 +125,16 @@
                                 </td>
                             </tr>
                         @endforelse
-
                     </tbody>
                 </table>
             </div>
+
+            {{-- Pagination --}}
+            @if ($categories->hasPages())
+                <div class="border-t border-gray-200 px-6 py-4">
+                    {{ $categories->links() }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection
