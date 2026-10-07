@@ -30,7 +30,7 @@ class pageController extends Controller
     public function product(Request $request)
     {
         $categories = Category::withCount('products')->get();
-        
+
         $products = Product::with(['category', 'detailProducts'])->where('status', true);
 
         if ($request->filled('category')) {
@@ -52,16 +52,41 @@ class pageController extends Controller
             'category',
             'detailProducts.images',
             'detailProducts.specifications',
-            'detailProducts.inStock'
-        ])->where('slug', $slug)->where('status', true)->first();
+            'detailProducts.inStock',
+            'detailProducts.reviews.detailOrder.order',
+        ])->where('slug', $slug)
+            ->where('status', true)
+            ->first();
 
         if (!$product) {
             return view('pages.notFound');
         }
 
+        $reviews = $product->detailProducts
+            ->flatMap(function ($detail) {
+                return $detail->reviews;
+            });
+
+        $reviewCount = $reviews->count();
+
+        $averageRating = $reviewCount > 0
+            ? round($reviews->avg('rating'), 1)
+            : 0;
+
         $relatedProducts = Product::with(['category', 'detailProducts'])
             ->where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)->where('status', true)->latest()->take(4)->get();
-        return view('pages.show', compact('product', 'relatedProducts'));
+            ->where('id', '!=', $product->id)
+            ->where('status', true)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('pages.show', compact(
+            'product',
+            'relatedProducts',
+            'reviews',
+            'reviewCount',
+            'averageRating'
+        ));
     }
 }
